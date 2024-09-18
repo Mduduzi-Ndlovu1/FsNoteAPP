@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import NoteCard from '../../components/Cards/NoteCard'
+import { format } from 'date-fns'
 import { MdAdd } from 'react-icons/md'
 import AddEditNote from './AddEditNote'
 import Modal from "react-modal"
@@ -13,6 +14,8 @@ const Home = () => {
     type: 'add',
     data: null,
   });
+
+  const [allNotes, setAllNotes] = useState([]);
 
   const [userInfo, setUserInfo] = useState(null);
 
@@ -34,9 +37,23 @@ const Home = () => {
       }
     }
   };
+
+  // Get All Notes
+  const getAllNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-notes");
+
+      if (response.data && response.data.notes) {
+        setAllNotes(response.data.notes);
+      }
+    } catch (error) {
+      console.log("An Unexpected Error Occurred. Please try again later.");
+    }
+  }
   
 
   useEffect(() => {
+    getAllNotes()
     getUserInfo();
     return () => {
       
@@ -49,6 +66,20 @@ const Home = () => {
 
       <div className='container mx-auto'>
         <div className='grid grid-cols-3 gap-4 mt-8'>
+          {allNotes.map((item, index) => (
+            <NoteCard
+            key={item._id}
+            title={item.title}
+            content={item.content}
+            date={item.createdOn}
+            tags={item.tags}
+            isPinned={item.isPinned}
+            onEdit={() => {}}
+            onDelete={() => {}}
+            onPinNote={() => {}}
+
+          />
+          ))}
           <NoteCard
             title="Meeting Notes"
             content="Discuss project milestones and next steps for Q4."
@@ -60,6 +91,7 @@ const Home = () => {
             onPinNote={() => {}}
 
           />
+          
         </div>
       </div>
       <button 

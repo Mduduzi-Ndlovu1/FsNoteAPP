@@ -1,6 +1,6 @@
-import React from 'react'
-import { MdOutlinePushPin } from "react-icons/md";
-import { MdCreate,MdDelete } from 'react-icons/md';
+import { format } from 'date-fns';
+import React from 'react';
+import { MdOutlinePushPin, MdCreate, MdDelete } from 'react-icons/md';
 
 const NoteCard = ({
     title,
@@ -17,7 +17,7 @@ const NoteCard = ({
         <div className='flex items-center justify-between'>
             <div>
                 <h6 className='text-sm font-medium'>{title}</h6>
-                <span className='text-xs'>{date}</span>
+                <span className='text-xs'>{format(new Date(date), 'dd MMM yyyy')}</span>
             </div>
 
             <MdOutlinePushPin className={`icon-btn ${isPinned ? 'text-primary' : 'text-slate-300'}`} onClick={onPinNote}/>
@@ -27,7 +27,9 @@ const NoteCard = ({
         </p>
 
         <div className='flex items-center justify-between mt-2'>
-            <div className='text-xs text-slate-500'>{tags}</div>
+            <div className='text-xs text-slate-500'>
+                {Array.isArray(tags) ? tags.map((item, index) => `#${item} `) : ''}
+            </div>
 
             <div className='flex items-center gap-2'>
                 <MdCreate 
@@ -42,7 +44,7 @@ const NoteCard = ({
             </div>
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default NoteCard
+export default NoteCard;

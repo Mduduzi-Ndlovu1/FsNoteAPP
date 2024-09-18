@@ -133,7 +133,6 @@ app.post("/add-note", authenticateToken, async (req, res) => {
     const { title, content, tags } = req.body;
     const userId = req.user._id || req.user.userInfo._id;
 
-    console.log(`This is the user brav ${userId}`)
     if (!title) {
         return res.status(400).json({ error: true, message: "Please enter title" });
     }
@@ -158,7 +157,6 @@ app.post("/add-note", authenticateToken, async (req, res) => {
             message: "Note added successfully",
         });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ error: true, message: "Internal Server Error" });
     }
 });
@@ -169,8 +167,7 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
     const noteId = req.params.noteId;
     const userId = req.user._id || req.user.userInfo._id;
 
-    console.log("noteId:", noteId);
-    console.log("userId:", userId);
+    
 
     if(!title && !content && !tags) {
         return res
@@ -180,7 +177,6 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 
     try {
         const note = await Note.findOne({ _id: noteId, userId });
-        console.log(note)
         if (!note) {
             return res.status(404).json({ error: true, message: "Note not found" });
         }
@@ -205,7 +201,6 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 //Get All Notes
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
     const userId = req.user._id || req.user.userInfo._id;
-    console.log(userId)
     try {
         const notes = await Note.find({ userId }).sort({isPinned: -1});
 
@@ -245,11 +240,6 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
     const { isPinned } = req.body;
     const noteId = req.params.noteId;
     const userId = req.user._id || req.user.userInfo._id;
-
-    console.log("noteId:", noteId);
-    console.log("userId:", userId);
-
-    
 
     try {
         const note = await Note.findOne({ _id: noteId, userId });

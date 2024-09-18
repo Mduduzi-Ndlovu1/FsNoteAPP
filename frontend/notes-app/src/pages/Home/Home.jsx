@@ -21,6 +21,13 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const handleEdit = (noteDetails) => {
+    setOpenAddEditModel({
+      isShown: true, data: noteDetails, type: 'edit'
+
+    })
+  };
+
   // Get User Info
   const getUserInfo = async () => {
     try {
@@ -74,7 +81,7 @@ const Home = () => {
             date={item.createdOn}
             tags={item.tags}
             isPinned={item.isPinned}
-            onEdit={() => {}}
+            onEdit={() => handleEdit(item)}
             onDelete={() => {}}
             onPinNote={() => {}}
 
@@ -116,12 +123,12 @@ const Home = () => {
         className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-hidden"
       >
         <AddEditNote 
-        type={openAddEditModel.type}
-        noteData={openAddEditModel.data}
-          onClose={() => setOpenAddEditModel({isShown: false, type: 'add', data: null})}
-
-          getAllNotes={getAllNotes()}
+            type={openAddEditModel.type}
+            noteData={openAddEditModel.data}
+            onClose={() => setOpenAddEditModel({isShown: false, type: 'add', data: null})}
+            getAllNotes={getAllNotes}  
         />
+
 
       </Modal>
       

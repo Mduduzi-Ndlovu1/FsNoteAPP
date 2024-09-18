@@ -261,6 +261,34 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
     }
 });
 
+// Search Notes
+app.get("/search-notes", authenticateToken, async (req, res) => {
+    const { query } = req.query;
+    const userId = req.user._id || req.user.userInfo._id;
+
+    if (!query) {
+        return res.status(400).json({ error: true, message: "Query is required" });
+    }
+
+    try {
+        const matchedNotes = await Note.find({
+            userId,
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { content: { $regex: query, $options: "i" } },
+            ],
+        });
+
+        return res.json({
+            error: false,
+            notes: matchedNotes,
+            message: "Notes retrieved successfully",
+        })
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error" });
+    }
+});
+
 app.listen(8000);
 
 module.exports = app;

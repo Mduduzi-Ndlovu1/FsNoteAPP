@@ -119,6 +119,8 @@ const Home = () => {
         type={openAddEditModel.type}
         noteData={openAddEditModel.data}
           onClose={() => setOpenAddEditModel({isShown: false, type: 'add', data: null})}
+
+          getAllNotes={getAllNotes()}
         />
 
       </Modal>

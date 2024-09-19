@@ -1,5 +1,8 @@
 # MERN Stack Notes App
 
+![image](https://github.com/user-attachments/assets/870148a1-cbd6-4df5-b96b-552b75f82804)
+
+
 ## Overview
 
 The MERN Stack Notes App is a web application that allows users to create, edit, delete, and manage notes efficiently. Built using MongoDB, Express.js, React, and Node.js, this application provides a seamless user experience and secure authentication.
